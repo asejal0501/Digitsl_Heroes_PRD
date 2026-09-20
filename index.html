@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Digital Heroes — Play. Give. Win.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0b1512;
+    --bg-raised: #101d19;
+    --bg-card: #132420;
+    --line: rgba(233,238,235,0.10);
+    --line-strong: rgba(233,238,235,0.18);
+    --ink: #eef2ef;
+    --ink-dim: #a9b8b2;
+    --ink-faint: #6e7d77;
+    --sage: #8fbfa0;
+    --sage-dim: #5d7d6c;
+    --amber: #d69a4e;
+    --amber-strong: #e8b06a;
+    --danger: #d97b6c;
+    --radius-s: 8px;
+    --radius-m: 14px;
+    --radius-l: 22px;
+    --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after{ box-sizing: inherit; }
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+  html, body{ height: 100%; }
+  body{
+    margin:0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size:15px; line-height:1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection{ background: var(--amber); color:#1a1008; }
+  a{ color:inherit; }
+  button{ font-family: inherit; cursor:pointer; }
+  input, select, textarea{ font-family: inherit; font-size:15px; }
+  img{ max-width:100%; }
+  .wrap{ max-width: 1080px; margin:0 auto; padding: 0 28px; }
+  @media (max-width: 640px){ .wrap{ padding: 0 18px; } }
+
+  /* ---------- top nav ---------- */
+  .topbar{
+    position: sticky; top:0; z-index: 40;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: rgba(11,21,18,0.86); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner{ max-width:1080px; margin:0 auto; padding: 14px 28px; display:flex; align-items:center; gap:22px; }
+  @media (max-width: 640px){ .topbar-inner{ padding: 12px 18px; } }
+  .logo{ display:flex; align-items:baseline; gap:2px; font-weight:800; letter-spacing:-0.01em; font-size:18px; white-space:nowrap; }
+  .logo em{ font-family: var(--serif); font-style: italic; font-weight:600; color: var(--sage); }
+  .nav-tabs{ display:flex; gap:4px; margin-left:4px; flex:1; overflow-x:auto; }
+  .nav-tab{
+    background:none; border:none; color: var(--ink-dim); padding:8px 12px; border-radius: 999px;
+    font-size:13.5px; font-weight:600; white-space:nowrap; transition: color .15s, background .15s;
+  }
+  .nav-tab:hover{ color: var(--ink); }
+  .nav-tab.active{ color: var(--bg); background: var(--sage); }
+  .nav-right{ display:flex; align-items:center; gap:10px; margin-left:auto; }
+  .pill-btn{
+    border:1px solid var(--line-strong); background: transparent; color: var(--ink);
+    padding: 8px 16px; border-radius: 999px; font-size:13.5px; font-weight:700;
+  }
+  .pill-btn.solid{ background: var(--amber); color:#221708; border-color: var(--amber); }
+  .pill-btn.solid:hover{ background: var(--amber-strong); }
+  .pill-btn:hover{ border-color: var(--ink-dim); }
+  .who{ font-size:13px; color: var(--ink-dim); display:flex; align-items:center; gap:8px; }
+  .avatar{ width:26px; height:26px; border-radius:50%; background: var(--sage); color:#0b1512; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; }
+
+  /* ---------- hero ---------- */
+  .hero{ padding: 68px 0 56px; position:relative; overflow:hidden; }
+  .hero::after{
+    content:""; position:absolute; right:-120px; top:-160px; width:420px; height:420px; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(214,154,78,0.28), rgba(214,154,78,0) 70%);
+    pointer-events:none;
+  }
+  .eyebrow-free{ color: var(--sage); font-family: var(--serif); font-style: italic; font-size: 18px; margin: 0 0 6px; }
+  .hero h1{
+    font-family: var(--sans); font-weight:800; letter-spacing:-0.03em; line-height:1.02;
+    font-size: clamp(36px, 6vw, 62px); margin: 0 0 22px; max-width: 13ch;
+  }
+  .hero p.lead{ font-size:17px; color: var(--ink-dim); max-width: 46ch; margin: 0 0 30px; }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; }
+  .btn-primary{
+    background: var(--amber); color:#221708; border:none; padding: 14px 26px; border-radius: 999px;
+    font-weight:800; font-size:15px; transition: transform .12s, background .15s;
+  }
+  .btn-primary:hover{ background: var(--amber-strong); transform: translateY(-1px); }
+  .btn-ghost{
+    background: transparent; border:1px solid var(--line-strong); color: var(--ink); padding:14px 24px;
+    border-radius:999px; font-weight:700; font-size:15px;
+  }
+  .btn-ghost:hover{ border-color: var(--sage); color: var(--sage); }
+
+  .stat-row{ display:grid; grid-template-columns: repeat(4,1fr); gap:0; margin-top:56px; border-top:1px solid var(--line); }
+  .stat{ padding: 22px 0 0; border-right:1px solid var(--line); }
+  .stat:last-child{ border-right:none; }
+  .stat b{ display:block; font-size: 28px; font-family: var(--serif); font-style: italic; color: var(--sage); font-weight:600; }
+  .stat span{ display:block; font-size:12.5px; color: var(--ink-faint); margin-top:4px; }
+  @media (max-width: 700px){ .stat-row{ grid-template-columns: repeat(2,1fr); } .stat{ border-right:none; border-bottom:1px solid var(--line); padding-bottom:16px; } }
+
+  /* ---------- section shell ---------- */
+  section.block{ padding: 60px 0; border-top: 1px solid var(--line); }
+  .block-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; margin-bottom:30px; flex-wrap:wrap; }
+  .block-head h2{ font-size: clamp(24px,3.4vw,32px); margin:0; letter-spacing:-0.02em; font-weight:800; max-width: 20ch; }
+  .block-head p{ color: var(--ink-dim); margin: 8px 0 0; max-width: 50ch; }
+
+  .obj-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
+  @media (max-width: 800px){ .obj-grid{ grid-template-columns: repeat(2,1fr);} }
+  @media (max-width: 520px){ .obj-grid{ grid-template-columns: 1fr;} }
+  .obj-card{ background: var(--bg-card); border:1px solid var(--line); border-radius: var(--radius-m); padding:20px; }
+  .obj-card b{ display:block; font-size:15px; margin-bottom:6px; }
+  .obj-card span{ color: var(--ink-dim); font-size:13.5px; }
+  .obj-card .tag{ color: var(--sage); font-size:11.5px; font-weight:700; letter-spacing:0.02em; display:block; margin-bottom:10px; }
+
+  /* charity cards */
+  .charity-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
+  @media (max-width: 860px){ .charity-grid{ grid-template-columns: repeat(2,1fr);} }
+  @media (max-width: 560px){ .charity-grid{ grid-template-columns: 1fr;} }
+  .charity-card{ background: var(--bg-card); border:1px solid var(--line); border-radius: var(--radius-m); padding:18px; display:flex; flex-direction:column; gap:10px; }
+  .badge{ width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-style:italic; font-weight:700; font-size:17px; color:#12201c; }
+  .charity-card h3{ margin:0; font-size:16px; }
+  .charity-card .cat{ color: var(--sage); font-size:11.5px; font-weight:700; }
+  .charity-card p{ color: var(--ink-dim); font-size:13.5px; margin:0; flex:1; }
+  .charity-card .events{ font-size:12px; color: var(--ink-faint); border-top:1px solid var(--line); padding-top:10px; }
+
+  .search-row{ display:flex; gap:10px; margin-bottom:22px; flex-wrap:wrap; }
+  .search-row input, .search-row select{
+    background: var(--bg-raised); border:1px solid var(--line-strong); color: var(--ink); padding:10px 14px;
+    border-radius: 999px; outline:none;
+  }
+  .search-row input{ flex:1; min-width:180px; }
+  .search-row input:focus, .search-row select:focus{ border-color: var(--sage); }
+
+  /* footer */
+  footer{ border-top:1px solid var(--line); padding: 34px 0 calc(34px + env(safe-area-inset-bottom,0px)); color: var(--ink-faint); font-size:12.5px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+
+  /* ---------- app shell (dashboard/admin/draws) ---------- */
+  .app-wrap{ padding: 36px 0 70px; }
+  .app-head{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:26px; gap:16px; flex-wrap:wrap; }
+  .app-head h1{ font-size: 28px; margin:0 0 4px; letter-spacing:-0.02em; }
+  .app-head p{ margin:0; color: var(--ink-dim); font-size:14px; }
+
+  .grid-2{ display:grid; grid-template-columns: 1.3fr 1fr; gap:18px; align-items:start; }
+  @media (max-width: 860px){ .grid-2{ grid-template-columns: 1fr; } }
+  .card{ background: var(--bg-card); border:1px solid var(--line); border-radius: var(--radius-m); padding:22px; }
+  .card h3{ margin:0 0 14px; font-size:16px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .card + .card{ margin-top:18px; }
+
+  .kv{ display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px dashed var(--line); font-size:13.5px; }
+  .kv:last-child{ border-bottom:none; }
+  .kv span:first-child{ color: var(--ink-dim); }
+  .status-chip{ display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px; }
+  .status-chip.on{ background: rgba(143,191,160,0.16); color: var(--sage); }
+  .status-chip.off{ background: rgba(217,123,108,0.16); color: var(--danger); }
+  .status-chip.wait{ background: rgba(214,154,78,0.16); color: var(--amber-strong); }
+
+  .score-list{ display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+  .score-row{ display:flex; align-items:center; justify-content:space-between; background: var(--bg-raised); border:1px solid var(--line); border-radius: var(--radius-s); padding:10px 14px; }
+  .score-row b{ font-size:18px; font-family: var(--serif); font-style:italic; color: var(--sage); font-weight:600; width:34px; }
+  .score-row .meta{ flex:1; padding-left:12px; font-size:12.5px; color: var(--ink-dim); }
+  .row-actions{ display:flex; gap:6px; }
+  .icon-btn{ background:none; border:1px solid var(--line-strong); color: var(--ink-dim); border-radius:8px; padding:5px 9px; font-size:12px; }
+  .icon-btn:hover{ color: var(--ink); border-color: var(--ink-dim); }
+  .icon-btn.danger:hover{ color: var(--danger); border-color: var(--danger); }
+
+  .form-row{ display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+  .field{ flex:1; min-width:110px; display:flex; flex-direction:column; gap:5px; }
+  .field label{ font-size:11.5px; color: var(--ink-faint); font-weight:600; }
+  .field input, .field select{
+    background: var(--bg-raised); border:1px solid var(--line-strong); color: var(--ink);
+    padding:10px 12px; border-radius: var(--radius-s); outline:none; width:100%;
+  }
+  .field input:focus, .field select:focus{ border-color: var(--sage); }
+  .btn-sm{ background: var(--sage); color:#0b1512; border:none; padding:10px 18px; border-radius: var(--radius-s); font-weight:800; font-size:13.5px; align-self:flex-end; }
+  .btn-sm:hover{ background: var(--sage-dim); }
+  .btn-sm.amber{ background: var(--amber); color:#221708; }
+  .btn-sm.amber:hover{ background: var(--amber-strong); }
+  .btn-sm.outline{ background:none; border:1px solid var(--line-strong); color: var(--ink); }
+  .btn-sm.outline:hover{ border-color: var(--ink-dim); }
+  .btn-sm[disabled]{ opacity:.4; cursor:not-allowed; }
+
+  .hint{ font-size:12px; color: var(--ink-faint); margin: -4px 0 12px; }
+  .error-msg{ font-size:12.5px; color: var(--danger); margin: -2px 0 10px; }
+
+  .num-tokens{ display:flex; gap:6px; flex-wrap:wrap; }
+  .num-token{ width:32px; height:32px; border-radius:8px; background: var(--bg-raised); border:1px solid var(--line-strong); display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:700; color: var(--ink-dim); }
+  .num-token.hit{ background: var(--sage); border-color: var(--sage); color:#0b1512; }
+  .num-token.miss-draw{ background: var(--amber); border-color: var(--amber); color:#221708; }
+
+  .tier-bars{ display:flex; flex-direction:column; gap:10px; }
+  .tier-bar-row{ display:flex; align-items:center; gap:10px; font-size:12.5px; }
+  .tier-bar-row .lbl{ width:96px; color: var(--ink-dim); }
+  .tier-bar-track{ flex:1; height:8px; background: var(--bg-raised); border-radius:99px; overflow:hidden; }
+  .tier-bar-fill{ height:100%; border-radius:99px; }
+  .tier-bar-row .amt{ width:90px; text-align:right; font-weight:700; }
+
+  .tabs-inline{ display:flex; gap:6px; margin-bottom:18px; flex-wrap:wrap; }
+  .tab-chip{ background: var(--bg-raised); border:1px solid var(--line); color: var(--ink-dim); padding:7px 14px; border-radius:999px; font-size:12.5px; font-weight:700; }
+  .tab-chip.active{ background: var(--sage); color:#0b1512; border-color: var(--sage); }
+
+  table.data-table{ width:100%; border-collapse: collapse; font-size:13px; }
+  table.data-table th{ text-align:left; color: var(--ink-faint); font-weight:700; font-size:11px; text-transform:none; padding:8px 10px; border-bottom:1px solid var(--line-strong); }
+  table.data-table td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  table.data-table tr:last-child td{ border-bottom:none; }
+  .table-wrap{ overflow-x:auto; }
+
+  .empty-state{ text-align:center; padding: 34px 12px; color: var(--ink-faint); font-size:13.5px; }
+
+  .modal-backdrop{ position:fixed; inset:0; background:rgba(6,10,9,0.7); backdrop-filter: blur(3px); display:flex; align-items:center; justify-content:center; z-index:100; padding:20px; }
+  .modal{ background: var(--bg-card); border:1px solid var(--line-strong); border-radius: var(--radius-l); padding:28px; width:100%; max-width:400px; max-height: 90vh; overflow-y:auto; }
+  .modal h2{ margin:0 0 4px; font-size:22px; }
+  .modal p.sub{ color: var(--ink-dim); font-size:13px; margin:0 0 20px; }
+  .modal .field{ margin-bottom:14px; }
+  .modal-close{ float:right; background:none; border:none; color: var(--ink-faint); font-size:20px; line-height:1; }
+  .toggle-auth{ text-align:center; font-size:13px; color: var(--ink-dim); margin-top:16px; }
+  .toggle-auth button{ background:none; border:none; color: var(--sage); font-weight:700; padding:0; }
+
+  .toast{ position:fixed; bottom: calc(24px + env(safe-area-inset-bottom,0px)); left:50%; transform:translateX(-50%); background: var(--sage); color:#0b1512; padding:12px 22px; border-radius:999px; font-weight:700; font-size:13.5px; z-index:200; box-shadow:0 8px 24px rgba(0,0,0,0.35); animation: toastIn .18s ease-out; }
+  @keyframes toastIn{ from{ opacity:0; transform: translateX(-50%) translateY(8px);} to{opacity:1; transform:translateX(-50%) translateY(0);} }
+
+  .slider-row{ display:flex; align-items:center; gap:12px; }
+  .slider-row input[type=range]{ flex:1; accent-color: var(--sage); }
+  .slider-val{ font-family: var(--serif); font-style:italic; color: var(--sage); font-size:18px; font-weight:600; width:52px; text-align:right; }
+
+  .locked-panel{ text-align:center; padding: 60px 20px; }
+  .locked-panel .lock-ico{ font-size:34px; margin-bottom:14px; }
+  .locked-panel h2{ margin:0 0 8px; }
+  .locked-panel p{ color: var(--ink-dim); max-width:40ch; margin: 0 auto 22px; }
+
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-thumb{ background: var(--line-strong); border-radius:99px; }
+
+  .assum-note{ font-size:12px; color: var(--ink-faint); border-left:2px solid var(--sage-dim); padding-left:10px; margin-top:16px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">digital<em>.heroes</em></div>
+    <nav class="nav-tabs" id="navTabs"></nav>
+    <div class="nav-right" id="navRight"></div>
+  </div>
+</div>
+
+<div id="app"></div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+/* =========================================================
+   DIGITAL HEROES — client-side prototype
+   All data lives in localStorage (per-browser, per-device).
+   This is a functional demo of the product logic described
+   in the PRD: subscriptions, rolling 5-score entry, the
+   draw / prize-pool engine, charity contributions, winner
+   verification, and both user + admin dashboards.
+   ========================================================= */
+
+const STORE_KEY = 'dh_state_v3';
+const nowISO = () => new Date().toISOString().slice(0,10);
+const uid = (p='') => p + Math.random().toString(36).slice(2,9);
+const money = (n) => '$' + (Math.round(n*100)/100).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+const initials = (name) => name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+const palette = ['#8fbfa0','#d69a4e','#6e9bd9','#c47ab0','#d9a06e','#7bbfa8'];
+const colorFor = (seed) => palette[Math.abs(hashStr(seed)) % palette.length];
+function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h = (h<<5)-h + s.charCodeAt(i); h|=0; } return h; }
+
+function defaultState(){
+  const charities = [
+    {id:'c1', name:'Fairway Futures', cat:'Youth Sport', desc:'Gets junior golf equipment and coaching into under-resourced schools.', events:'Next golf day: Oct 18, Pune'},
+    {id:'c2', name:'Green Horizon Trust', cat:'Environment', desc:'Restores wetlands bordering municipal golf courses across Maharashtra.', events:'Volunteer planting: Nov 2'},
+    {id:'c3', name:'CarePath Foundation', cat:'Healthcare', desc:'Funds mobile health camps in rural communities near tournament venues.', events:'Health camp: Dec 6, Nagpur'},
+    {id:'c4', name:'Second Serve', cat:'Community', desc:'Refurbishes and donates used sports gear to community centres.', events:'Gear drive: ongoing'},
+    {id:'c5', name:'Bright Innings', cat:'Education', desc:'Scholarships for children of golf-course groundstaff and caddies.', events:'Applications open: Jan'},
+    {id:'c6', name:'Open Fields Relief', cat:'Disaster Relief', desc:'Rapid-response relief fund supported by the golfing community.', events:'No scheduled events'},
+  ];
+  const adminUser = {
+    id:'admin1', name:'Admin', email:'admin@digitalheroes.co.in', password:'admin123', role:'admin',
+    subscription:null, charity:null, scores:[], winnings:[]
+  };
+  const demoScores = [
+    {id:uid('s'), date:'2026-09-02', score:34},
+    {id:uid('s'), date:'2026-09-08', score:29},
+    {id:uid('s'), date:'2026-09-11', score:41},
+    {id:uid('s'), date:'2026-09-15', score:22},
+    {id:uid('s'), date:'2026-09-18', score:37},
+  ];
+  const demoUser = {
+    id:'demo1', name:'Riya Kapoor', email:'demo@digitalheroes.co.in', password:'demo123', role:'subscriber',
+    subscription:{plan:'monthly', status:'active', renewal:'2026-10-20', startedAt:'2026-06-20'},
+    charity:{id:'c1', pct:15},
+    scores: demoScores,
+    winnings: []
+  };
+  return {
+    users: [adminUser, demoUser],
+    charities,
+    draws: [],
+    currentUserId: null,
+    seq: 1
+  };
+}
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) throw new Error('none');
+    return JSON.parse(raw);
+  }catch(e){
+    const s = defaultState();
+    save(s);
+    return s;
+  }
+}
+function save(s){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){ console.error('storage failed', e); }
+}
+
+let state = load();
+let route = 'home';
+let authMode = null; // 'login' | 'signup' | null
+let charityFilter = {q:'', cat:'all'};
+let adminDrawDraftType = 'random';
+
+function currentUser(){ return state.users.find(u => u.id === state.currentUserId) || null; }
+function isAdmin(){ const u = currentUser(); return u && u.role === 'admin'; }
+
+function toast(msg){
+  const root = document.getElementById('toastRoot');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  root.innerHTML = '';
+  root.appendChild(el);
+  setTimeout(()=>{ if(root.contains(el)) root.removeChild(el); }, 2600);
+}
+
+function go(r){
+  const u = currentUser();
+  if((r==='dashboard') && !u){ authMode='login'; render(); return; }
+  if((r==='admin') && !(u && u.role==='admin')){ toast("That area is for admins only."); return; }
+  route = r; render();
+}
+
+/* ---------------- SCORE LOGIC ---------------- */
+function addScore(userId, date, score){
+  const u = state.users.find(x=>x.id===userId);
+  score = Math.max(1, Math.min(45, Math.round(score)));
+  const existingIdx = u.scores.findIndex(s=>s.date===date);
+  if(existingIdx>-1){ return {ok:false, reason:'duplicate'}; }
+  u.scores.push({id:uid('s'), date, score});
+  u.scores.sort((a,b)=> a.date < b.date ? 1 : -1); // newest first
+  if(u.scores.length > 5){
+    u.scores = u.scores.slice(0,5); // drop oldest beyond 5
+  }
+  save(state);
+  return {ok:true};
+}
+function editScore(userId, scoreId, date, score){
+  const u = state.users.find(x=>x.id===userId);
+  score = Math.max(1, Math.min(45, Math.round(score)));
+  const dupe = u.scores.find(s=>s.date===date && s.id!==scoreId);
+  if(dupe) return {ok:false, reason:'duplicate'};
+  const s = u.scores.find(x=>x.id===scoreId);
+  s.date = date; s.score = score;
+  u.scores.sort((a,b)=> a.date < b.date ? 1 : -1);
+  save(state);
+  return {ok:true};
+}
+function deleteScore(userId, scoreId){
+  const u = state.users.find(x=>x.id===userId);
+  u.scores = u.scores.filter(s=>s.id!==scoreId);
+  save(state);
+}
+
+/* ---------------- DRAW / PRIZE LOGIC ---------------- */
+// Assumption: each subscriber's stored score values (1-45) double as their
+// draw numbers. Matching how many of your numbers appear in the monthly
+// draw earns you a place in that tier. "Algorithmic" mode weights the draw
+// toward the score values that occur most often across all active
+// subscribers that month (rewarding consistency in the field); "random"
+// draws five values uniformly from 1-45.
+function activeSubscribers(){
+  return state.users.filter(u => u.role==='subscriber' && u.subscription && u.subscription.status==='active' && u.scores.length>0);
+}
+function scoreFrequencyTable(){
+  const freq = {};
+  activeSubscribers().forEach(u=> u.scores.forEach(s=>{ freq[s.score] = (freq[s.score]||0)+1; }));
+  return freq;
+}
+function drawNumbers(type){
+  const pool = Array.from({length:45}, (_,i)=>i+1);
+  const picked = [];
+  if(type === 'algorithmic'){
+    const freq = scoreFrequencyTable();
+    let weighted = [];
+    pool.forEach(n=>{
+      const w = 1 + (freq[n]||0)*3; // weight toward frequent scores
+      for(let i=0;i<w;i++) weighted.push(n);
+    });
+    while(picked.length<5 && weighted.length){
+      const idx = Math.floor(Math.random()*weighted.length);
+      const val = weighted[idx];
+      if(!picked.includes(val)) picked.push(val);
+      weighted = weighted.filter(x=>x!==val);
+    }
+  } else {
+    const copy = [...pool];
+    while(picked.length<5){
+      const idx = Math.floor(Math.random()*copy.length);
+      picked.push(copy.splice(idx,1)[0]);
+    }
+  }
+  return picked.sort((a,b)=>a-b);
+}
+function computePoolTotal(){
+  // Fixed simplified contribution: $12 per active subscriber into the prize pool per month.
+  return activeSubscribers().length * 12;
+}
+function simulateDraw(type){
+  const numbers = drawNumbers(type);
+  const poolTotal = computePoolTotal();
+  const subs = activeSubscribers();
+  const results = {5:[], 4:[], 3:[]};
+  subs.forEach(u=>{
+    const userNums = u.scores.map(s=>s.score);
+    const matchCount = numbers.filter(n=> userNums.includes(n)).length;
+    if(matchCount>=3){
+      results[matchCount].push(u.id);
+    }
+  });
+  const tiers = {
+    5:{share:0.40, rollover:true},
+    4:{share:0.35, rollover:false},
+    3:{share:0.25, rollover:false},
+  };
+  const rolloverCarry = (state.draws.filter(d=>d.status==='published').slice(-1)[0]||{}).jackpotRolloverAmount || 0;
+  const tierAmounts = {};
+  Object.keys(tiers).forEach(t=>{
+    let pool = poolTotal * tiers[t].share;
+    if(t==='5') pool += rolloverCarry;
+    const winners = results[t];
+    tierAmounts[t] = { pool, winnerCount: winners.length, perWinner: winners.length? pool/winners.length : 0, winners };
+  });
+  const jackpotRolloverAmount = tierAmounts['5'].winnerCount===0 ? tierAmounts['5'].pool : 0;
+  return {numbers, poolTotal, tierAmounts, jackpotRolloverAmount, type};
+}
+
+function createDraftDraw(type){
+  const monthLabel = new Date().toLocaleString('en-US',{month:'long', year:'numeric'});
+  const sim = simulateDraw(type);
+  const draw = {
+    id: uid('d'), month: monthLabel, status:'draft', type,
+    numbers: sim.numbers, poolTotal: sim.poolTotal, tierAmounts: sim.tierAmounts,
+    jackpotRolloverAmount: sim.jackpotRolloverAmount,
+    createdAt: new Date().toISOString()
+  };
+  state.draws.push(draw);
+  save(state);
+  return draw;
+}
+function resimulate(drawId){
+  const d = state.draws.find(x=>x.id===drawId);
+  const sim = simulateDraw(d.type);
+  Object.assign(d, {numbers:sim.numbers, poolTotal:sim.poolTotal, tierAmounts:sim.tierAmounts, jackpotRolloverAmount:sim.jackpotRolloverAmount});
+  save(state);
+}
+function publishDraw(drawId){
+  const d = state.draws.find(x=>x.id===drawId);
+  d.status = 'published';
+  d.publishedAt = new Date().toISOString();
+  [5,4,3].forEach(t=>{
+    const tier = d.tierAmounts[t];
+    tier.winners.forEach(userId=>{
+      const u = state.users.find(x=>x.id===userId);
+      u.winnings.push({id:uid('w'), drawId:d.id, month:d.month, tier:t, amount: tier.perWinner, status:'pending', proof:null});
+    });
+  });
+  save(state);
+}
+
+/* ---------------- RENDER: SHELL ---------------- */
+function renderNav(){
+  const u = currentUser();
+  const tabs = document.getElementById('navTabs');
+  const items = [
+    ['home','Home'], ['charities','Charities'], ['draws','Draws'],
+  ];
+  if(u) items.push(['dashboard','Dashboard']);
+  if(u && u.role==='admin') items.push(['admin','Admin']);
+  tabs.innerHTML = items.map(([r,label])=>
+    `<button class="nav-tab ${route===r?'active':''}" data-route="${r}">${label}</button>`
+  ).join('');
+  tabs.querySelectorAll('button').forEach(b=> b.onclick = ()=> go(b.dataset.route));
+
+  const right = document.getElementById('navRight');
+  if(u){
+    right.innerHTML = `
+      <div class="who"><div class="avatar">${initials(u.name)}</div>${u.name.split(' ')[0]}</div>
+      <button class="pill-btn" id="btnLogout">Log out</button>`;
+    document.getElementById('btnLogout').onclick = ()=>{ state.currentUserId=null; save(state); route='home'; render(); toast('Logged out.'); };
+  } else {
+    right.innerHTML = `
+      <button class="pill-btn" id="btnLogin">Log in</button>
+      <button class="pill-btn solid" id="btnJoin">Subscribe</button>`;
+    document.getElementById('btnLogin').onclick = ()=>{ authMode='login'; renderModal(); };
+    document.getElementById('btnJoin').onclick = ()=>{ authMode='signup'; renderModal(); };
+  }
+}
+
+function render(){
+  renderNav();
+  const app = document.getElementById('app');
+  if(route==='home') app.innerHTML = viewHome();
+  else if(route==='charities') app.innerHTML = viewCharities();
+  else if(route==='draws') app.innerHTML = viewDraws();
+  else if(route==='dashboard') app.innerHTML = viewDashboard();
+  else if(route==='admin') app.innerHTML = viewAdmin();
+  attachRouteHandlers();
+  renderModal();
+}
+
+/* ---------------- HOME ---------------- */
+function viewHome(){
+  const spotlight = state.charities[0];
+  return `
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow-free">Every round you play</p>
+      <h1>Turns your golf scores into a chance to win — and a reason to give.</h1>
+      <p class="lead">Log your last five rounds, get entered into a monthly prize draw built from real scoring data, and send part of every subscription to a charity you pick.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary" id="ctaSubscribe">Start your subscription</button>
+        <button class="btn-ghost" id="ctaCharities">Browse charities</button>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b>${activeSubscribers().length || '—'}</b><span>Active subscribers this month</span></div>
+        <div class="stat"><b>${money(computePoolTotal())}</b><span>Current prize pool</span></div>
+        <div class="stat"><b>${state.charities.length}</b><span>Charities to choose from</span></div>
+        <div class="stat"><b>10%+</b><span>Minimum sent to your cause</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head">
+        <h2>Three things happen every month</h2>
+        <p>Subscribe once. Your rounds, your charity, and the draw all run on the same simple loop.</p>
+      </div>
+      <div class="obj-grid">
+        <div class="obj-card"><span class="tag">01 · PLAY</span><b>Log your last 5 rounds</b><span>Stableford scores, 1–45. The newest replaces the oldest — no clutter, always current.</span></div>
+        <div class="obj-card"><span class="tag">02 · WIN</span><b>Enter the monthly draw</b><span>Your own scores double as your numbers. Match 3, 4, or 5 against the draw to win a share of the pool.</span></div>
+        <div class="obj-card"><span class="tag">03 · GIVE</span><b>Support your charity</b><span>At least 10% of every subscription goes straight to the cause you chose at signup.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head">
+        <h2>This month's spotlight</h2>
+        <p>Featured causes rotate every month across our charity partners.</p>
+      </div>
+      <div class="charity-card" style="max-width:520px;">
+        <div class="badge" style="background:${colorFor(spotlight.id)}">${initials(spotlight.name)}</div>
+        <h3>${spotlight.name}</h3>
+        <span class="cat">${spotlight.cat}</span>
+        <p>${spotlight.desc}</p>
+        <div class="events">${spotlight.events}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head">
+        <h2>How the draw pays out</h2>
+        <p>A fixed share of the pool is set aside for each match tier, worked out automatically from that month's subscriber count.</p>
+      </div>
+      <div class="card" style="max-width:560px;">
+        <div class="tier-bars">
+          <div class="tier-bar-row"><span class="lbl">5-number match</span><div class="tier-bar-track"><div class="tier-bar-fill" style="width:40%;background:var(--sage)"></div></div><span class="amt">40% · rolls over</span></div>
+          <div class="tier-bar-row"><span class="lbl">4-number match</span><div class="tier-bar-track"><div class="tier-bar-fill" style="width:35%;background:var(--amber)"></div></div><span class="amt">35%</span></div>
+          <div class="tier-bar-row"><span class="lbl">3-number match</span><div class="tier-bar-track"><div class="tier-bar-fill" style="width:25%;background:#6e9bd9"></div></div><span class="amt">25%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>digital.heroes · sample platform built from the Level 1 PRD</div>
+    <div>Prototype data only — nothing here is a real payment or payout</div>
+  </footer>
+  `;
+}
+
+/* ---------------- CHARITIES ---------------- */
+function viewCharities(){
+  const cats = ['all', ...new Set(state.charities.map(c=>c.cat))];
+  const list = state.charities.filter(c=>{
+    const matchQ = !charityFilter.q || c.name.toLowerCase().includes(charityFilter.q.toLowerCase()) || c.desc.toLowerCase().includes(charityFilter.q.toLowerCase());
+    const matchC = charityFilter.cat==='all' || c.cat===charityFilter.cat;
+    return matchQ && matchC;
+  });
+  return `
+  <div class="app-wrap wrap">
+    <div class="app-head"><div><h1>Charity directory</h1><p>Search or filter to find the cause that fits you.</p></div></div>
+    <div class="search-row">
+      <input id="charitySearch" placeholder="Search charities…" value="${charityFilter.q}">
+      <select id="charityCat">${cats.map(c=>`<option value="${c}" ${charityFilter.cat===c?'selected':''}>${c==='all'?'All categories':c}</option>`).join('')}</select>
+    </div>
+    ${list.length ? `<div class="charity-grid">${list.map(c=>`
+      <div class="charity-card">
+        <div class="badge" style="background:${colorFor(c.id)}">${initials(c.name)}</div>
+        <h3>${c.name}</h3>
+        <span class="cat">${c.cat}</span>
+        <p>${c.desc}</p>
+        <div class="events">${c.events}</div>
+      </div>`).join('')}</div>` : `<div class="empty-state">No charities match that search.</div>`}
+  </div>`;
+}
+
+/* ---------------- DRAWS (public view) ---------------- */
+function viewDraws(){
+  const published = state.draws.filter(d=>d.status==='published').slice().reverse();
+  const u = currentUser();
+  return `
+  <div class="app-wrap wrap">
+    <div class="app-head"><div><h1>Monthly draws</h1><p>Published results, most recent first. Admins configure and run new draws from the admin panel.</p></div></div>
+    ${published.length ? published.map(d=> drawResultCard(d, u)).join('') : `<div class="empty-state">No draws have been published yet — check back after the admin team runs this month's draw.</div>`}
+  </div>`;
+}
+function drawResultCard(d, u){
+  const yourNums = (u && u.role==='subscriber') ? u.scores.map(s=>s.score) : [];
+  return `
+  <div class="card">
+    <h3>${d.month} <span class="status-chip on">Published</span></h3>
+    <div class="num-tokens" style="margin-bottom:14px;">
+      ${d.numbers.map(n=> `<div class="num-token ${yourNums.includes(n)?'hit':''}">${n}</div>`).join('')}
+    </div>
+    <div class="tier-bars">
+      ${[5,4,3].map(t=>{
+        const tier = d.tierAmounts[t];
+        return `<div class="tier-bar-row"><span class="lbl">${t}-match (${tier.winnerCount})</span><div class="tier-bar-track"><div class="tier-bar-fill" style="width:${t===5?40:t===4?35:25}%;background:${t===5?'var(--sage)':t===4?'var(--amber)':'#6e9bd9'}"></div></div><span class="amt">${money(tier.pool)}</span></div>`;
+      }).join('')}
+    </div>
+    <div class="hint" style="margin-top:12px;">Pool this month: ${money(d.poolTotal)} · Draw type: ${d.type==='algorithmic'?'Algorithmic (score-weighted)':'Random'}${d.jackpotRolloverAmount>0?` · Jackpot rolls over: ${money(d.jackpotRolloverAmount)}`:''}</div>
+  </div>`;
+}
+
+/* ---------------- DASHBOARD ---------------- */
+function viewDashboard(){
+  const u = currentUser();
+  if(!u) return `<div class="app-wrap wrap"><div class="locked-panel"><div class="lock-ico">🔒</div><h2>Log in to see your dashboard</h2><p>Track your scores, your draw numbers, and your charity impact.</p></div></div>`;
+  if(u.role==='admin') return `<div class="app-wrap wrap"><div class="locked-panel"><div class="lock-ico">🛠️</div><h2>You're signed in as an admin</h2><p>Head to the Admin panel to manage the platform.</p><button class="btn-primary" onclick="go('admin')">Go to Admin</button></div></div>`;
+
+  const sub = u.subscription;
+  const charity = sub && u.charity ? state.charities.find(c=>c.id===u.charity.id) : null;
+  const drawsEntered = state.draws.filter(d=>d.status==='published').length;
+  const upcoming = sub && sub.status==='active' ? 1 : 0;
+  const totalWon = u.winnings.reduce((a,w)=>a+w.amount,0);
+  const pendingCount = u.winnings.filter(w=>w.status==='pending').length;
+
+  return `
+  <div class="app-wrap wrap">
+    <div class="app-head">
+      <div><h1>Welcome back, ${u.name.split(' ')[0]}</h1><p>Here's where your rounds, draw numbers, and giving stand this month.</p></div>
+    </div>
+
+    ${!sub ? `
+    <div class="card" style="margin-bottom:18px;">
+      <h3>You're not subscribed yet</h3>
+      <p style="color:var(--ink-dim); font-size:13.5px; margin-bottom:14px;">Subscribe to start logging scores, enter the monthly draw, and choose a charity to support.</p>
+      <button class="btn-sm amber" id="btnSubscribeNow">Subscribe now</button>
+    </div>` : ''}
+
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <h3>Your last 5 rounds <span class="status-chip ${sub?'on':'off'}">${sub? 'entry open':'subscribe to enter'}</span></h3>
+          ${u.scores.length ? `<div class="score-list">
+            ${u.scores.map(s=>`
+              <div class="score-row" data-score-id="${s.id}">
+                <b>${s.score}</b>
+                <div class="meta">${s.date}</div>
+                <div class="row-actions">
+                  <button class="icon-btn" data-edit-score="${s.id}">Edit</button>
+                  <button class="icon-btn danger" data-del-score="${s.id}">Delete</button>
+                </div>
+              </div>`).join('')}
+          </div>` : `<div class="empty-state">No scores logged yet.</div>`}
+          ${sub ? `
+          <div id="scoreFormArea">
+            <div class="form-row">
+              <div class="field"><label>Date</label><input type="date" id="scoreDate" max="${nowISO()}" value="${nowISO()}"></div>
+              <div class="field"><label>Stableford score (1–45)</label><input type="number" id="scoreVal" min="1" max="45" placeholder="e.g. 34"></div>
+              <button class="btn-sm" id="btnAddScore">Log score</button>
+            </div>
+            <div class="error-msg" id="scoreError" style="display:none;"></div>
+            <div class="hint">Only one entry per date. Once you have 5 rounds logged, a new entry replaces your oldest.</div>
+          </div>` : ''}
+        </div>
+
+        <div class="card">
+          <h3>Your draw numbers</h3>
+          ${sub && u.scores.length ? `
+            <div class="num-tokens" style="margin-bottom:10px;">${u.scores.map(s=>`<div class="num-token">${s.score}</div>`).join('')}</div>
+            <div class="hint">These are drawn straight from your logged rounds — the more rounds you log, the more numbers you're playing with next draw.</div>
+          ` : `<div class="empty-state">Log a round to generate draw numbers.</div>`}
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3>Subscription</h3>
+          ${sub ? `
+            <div class="kv"><span>Plan</span><span>${sub.plan==='monthly'?'Monthly':'Yearly'}</span></div>
+            <div class="kv"><span>Status</span><span class="status-chip ${sub.status==='active'?'on':'off'}">${sub.status}</span></div>
+            <div class="kv"><span>Renews</span><span>${sub.renewal}</span></div>
+            <div style="margin-top:14px; display:flex; gap:8px;">
+              <button class="btn-sm outline" id="btnTogglePlan">Switch to ${sub.plan==='monthly'?'yearly':'monthly'}</button>
+              <button class="btn-sm outline" id="btnCancelSub">${sub.status==='active'?'Cancel':'Reactivate'}</button>
+            </div>
+          ` : `<div class="empty-state">No active subscription.</div>`}
+        </div>
+
+        <div class="card">
+          <h3>Your charity</h3>
+          ${sub ? `
+            ${charity ? `
+              <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+                <div class="badge" style="background:${colorFor(charity.id)}; width:36px;height:36px;font-size:14px;">${initials(charity.name)}</div>
+                <div><b>${charity.name}</b><div style="font-size:12px;color:var(--ink-dim)">${charity.cat}</div></div>
+              </div>
+            ` : ''}
+            <label style="font-size:11.5px;color:var(--ink-faint);font-weight:600;">Contribution percentage</label>
+            <div class="slider-row" style="margin-top:6px;">
+              <input type="range" id="charitySlider" min="10" max="50" value="${u.charity ? u.charity.pct : 10}">
+              <div class="slider-val" id="charitySliderVal">${u.charity ? u.charity.pct : 10}%</div>
+            </div>
+            <div class="hint">Minimum 10% of your subscription. Raise it anytime.</div>
+            <select id="charitySelect" style="width:100%; margin-top:8px; background:var(--bg-raised); border:1px solid var(--line-strong); color:var(--ink); padding:10px 12px; border-radius:8px;">
+              ${state.charities.map(c=>`<option value="${c.id}" ${u.charity && u.charity.id===c.id ? 'selected':''}>${c.name}</option>`).join('')}
+            </select>
+            <button class="btn-sm" style="margin-top:10px; width:100%;" id="btnSaveCharity">Save charity choice</button>
+          ` : `<div class="empty-state">Subscribe to choose a charity.</div>`}
+        </div>
+
+        <div class="card">
+          <h3>Participation</h3>
+          <div class="kv"><span>Draws entered</span><span>${drawsEntered}</span></div>
+          <div class="kv"><span>Upcoming draws</span><span>${upcoming}</span></div>
+        </div>
+
+        <div class="card">
+          <h3>Winnings</h3>
+          <div class="kv"><span>Total won</span><span>${money(totalWon)}</span></div>
+          <div class="kv"><span>Pending payout</span><span>${pendingCount}</span></div>
+          ${u.winnings.length ? u.winnings.map(w=>`
+            <div class="score-row" style="margin-top:8px;">
+              <b style="font-size:13px;">${w.tier}★</b>
+              <div class="meta">${w.month} · ${money(w.amount)}</div>
+              <div class="row-actions">
+                ${w.status==='pending' && !w.proof ? `<button class="icon-btn" data-upload-proof="${w.id}">Upload proof</button>` : ''}
+                <span class="status-chip ${w.status==='paid'?'on':'wait'}">${w.proof && w.status==='pending' ? 'in review' : w.status}</span>
+              </div>
+            </div>`).join('') : ''}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------------- ADMIN ---------------- */
+let adminTab = 'users';
+function viewAdmin(){
+  const u = currentUser();
+  if(!(u && u.role==='admin')) return `<div class="app-wrap wrap"><div class="locked-panel"><div class="lock-ico">🔒</div><h2>Admins only</h2><p>Log in with an admin account to reach this panel.</p></div></div>`;
+
+  const tabs = [['users','Users'],['draws','Draws'],['charities','Charities'],['winners','Winners'],['reports','Reports']];
+  return `
+  <div class="app-wrap wrap">
+    <div class="app-head"><div><h1>Admin panel</h1><p>Full control over users, draws, charities, and payouts.</p></div></div>
+    <div class="tabs-inline">${tabs.map(([k,l])=>`<button class="tab-chip ${adminTab===k?'active':''}" data-admin-tab="${k}">${l}</button>`).join('')}</div>
+    <div id="adminTabBody">${
+      adminTab==='users' ? adminUsers() :
+      adminTab==='draws' ? adminDraws() :
+      adminTab==='charities' ? adminCharities() :
+      adminTab==='winners' ? adminWinners() :
+      adminReports()
+    }</div>
+  </div>`;
+}
+
+function adminUsers(){
+  const subs = state.users.filter(u=>u.role!=='admin');
+  return `
+  <div class="card">
+    <h3>All users <span class="hint" style="margin:0;">${subs.length} total</span></h3>
+    <div class="table-wrap"><table class="data-table">
+      <tr><th>Name</th><th>Email</th><th>Plan</th><th>Status</th><th>Scores</th><th></th></tr>
+      ${subs.map(u=>`
+        <tr>
+          <td>${u.name}</td>
+          <td>${u.email}</td>
+          <td>${u.subscription? u.subscription.plan : '—'}</td>
+          <td>${u.subscription? `<span class="status-chip ${u.subscription.status==='active'?'on':'off'}">${u.subscription.status}</span>` : '<span class="status-chip off">none</span>'}</td>
+          <td>${u.scores.length}/5</td>
+          <td><button class="icon-btn danger" data-remove-user="${u.id}">Remove</button></td>
+        </tr>`).join('')}
+    </table></div>
+    ${!subs.length ? '<div class="empty-state">No subscribers yet.</div>' : ''}
+  </div>`;
+}
+
+function adminDraws(){
+  const draws = state.draws.slice().reverse();
+  const draft = state.draws.find(d=>d.status==='draft');
+  return `
+  <div class="card">
+    <h3>Run this month's draw</h3>
+    ${draft ? '' : `
+    <div class="form-row">
+      <div class="field"><label>Draw logic</label>
+        <select id="drawTypeSelect">
+          <option value="random" ${adminDrawDraftType==='random'?'selected':''}>Random</option>
+          <option value="algorithmic" ${adminDrawDraftType==='algorithmic'?'selected':''}>Algorithmic (score-weighted)</option>
+        </select>
+      </div>
+      <button class="btn-sm amber" id="btnCreateDraft">Simulate draw</button>
+    </div>
+    <div class="hint">Active subscribers this cycle: ${activeSubscribers().length} · Pool would be ${money(computePoolTotal())}</div>`}
+  </div>
+  ${draft ? `
+  <div class="card">
+    <h3>${draft.month} — draft <span class="status-chip wait">unpublished</span></h3>
+    <div class="num-tokens" style="margin-bottom:14px;">${draft.numbers.map(n=>`<div class="num-token">${n}</div>`).join('')}</div>
+    <div class="tier-bars">
+      ${[5,4,3].map(t=>{
+        const tier = draft.tierAmounts[t];
+        return `<div class="tier-bar-row"><span class="lbl">${t}-match (${tier.winnerCount} winner${tier.winnerCount===1?'':'s'})</span><div class="tier-bar-track"><div class="tier-bar-fill" style="width:${t===5?40:t===4?35:25}%;background:${t===5?'var(--sage)':t===4?'var(--amber)':'#6e9bd9'}"></div></div><span class="amt">${money(tier.pool)}</span></div>`;
+      }).join('')}
+    </div>
+    <div class="hint" style="margin:12px 0;">Type: ${draft.type} · Pool: ${money(draft.poolTotal)}${draft.jackpotRolloverAmount>0?` · No 5-match winner — ${money(draft.jackpotRolloverAmount)} rolls into next month`:''}</div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn-sm outline" id="btnResim">Re-simulate</button>
+      <button class="btn-sm" id="btnPublish">Publish results</button>
+      <button class="btn-sm outline" id="btnDiscardDraft">Discard</button>
+    </div>
+  </div>` : ''}
+
+  <div class="card">
+    <h3>Published draws</h3>
+    ${draws.filter(d=>d.status==='published').length ? `<div class="table-wrap"><table class="data-table">
+      <tr><th>Month</th><th>Type</th><th>Pool</th><th>5★</th><th>4★</th><th>3★</th></tr>
+      ${draws.filter(d=>d.status==='published').map(d=>`
+        <tr><td>${d.month}</td><td>${d.type}</td><td>${money(d.poolTotal)}</td>
+        <td>${d.tierAmounts[5].winnerCount}</td><td>${d.tierAmounts[4].winnerCount}</td><td>${d.tierAmounts[3].winnerCount}</td></tr>`).join('')}
+    </table></div>` : `<div class="empty-state">Nothing published yet.</div>`}
+  </div>`;
+}
+
+function adminCharities(){
+  return `
+  <div class="card">
+    <h3>Add a charity</h3>
+    <div class="form-row">
+      <div class="field"><label>Name</label><input id="newCharName" placeholder="Charity name"></div>
+      <div class="field"><label>Category</label><input id="newCharCat" placeholder="e.g. Education"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Description</label><input id="newCharDesc" placeholder="One line description"></div>
+    </div>
+    <button class="btn-sm amber" id="btnAddCharity">Add charity</button>
+  </div>
+  <div class="card">
+    <h3>Manage charities</h3>
+    <div class="table-wrap"><table class="data-table">
+      <tr><th>Name</th><th>Category</th><th></th></tr>
+      ${state.charities.map(c=>`<tr><td>${c.name}</td><td>${c.cat}</td><td><button class="icon-btn danger" data-remove-charity="${c.id}">Remove</button></td></tr>`).join('')}
+    </table></div>
+  </div>`;
+}
+
+function adminWinners(){
+  const allWinnings = [];
+  state.users.forEach(u=> u.winnings.forEach(w=> allWinnings.push({...w, userName:u.name, userId:u.id})));
+  allWinnings.sort((a,b)=> a.status==='pending' ? -1 : 1);
+  return `
+  <div class="card">
+    <h3>Winner verification</h3>
+    ${allWinnings.length ? `<div class="table-wrap"><table class="data-table">
+      <tr><th>User</th><th>Month</th><th>Tier</th><th>Amount</th><th>Proof</th><th>Status</th><th></th></tr>
+      ${allWinnings.map(w=>`
+        <tr>
+          <td>${w.userName}</td><td>${w.month}</td><td>${w.tier}-match</td><td>${money(w.amount)}</td>
+          <td>${w.proof ? '📎 uploaded' : '—'}</td>
+          <td><span class="status-chip ${w.status==='paid'?'on':'wait'}">${w.status}</span></td>
+          <td style="display:flex; gap:6px;">
+            ${w.status==='pending' && w.proof ? `<button class="icon-btn" data-approve-win="${w.userId}:${w.id}">Approve</button><button class="icon-btn danger" data-reject-win="${w.userId}:${w.id}">Reject</button>`: ''}
+            ${w.status==='approved' ? `<button class="icon-btn" data-mark-paid="${w.userId}:${w.id}">Mark paid</button>` : ''}
+          </td>
+        </tr>`).join('')}
+    </table></div>` : `<div class="empty-state">No winners yet — publish a draw to generate winnings.</div>`}
+  </div>`;
+}
+
+function adminReports(){
+  const totalUsers = state.users.filter(u=>u.role!=='admin').length;
+  const totalPool = state.draws.reduce((a,d)=>a + (d.status==='published'?d.poolTotal:0), 0);
+  const charityTotals = {};
+  state.users.forEach(u=>{
+    if(u.subscription && u.charity){
+      const base = u.subscription.plan==='monthly' ? 40 : 400;
+      const amt = base * (u.charity.pct/100);
+      charityTotals[u.charity.id] = (charityTotals[u.charity.id]||0) + amt;
+    }
+  });
+  const drawStats = state.draws.filter(d=>d.status==='published');
+  return `
+  <div class="grid-2">
+    <div class="card">
+      <h3>Platform totals</h3>
+      <div class="kv"><span>Total users</span><span>${totalUsers}</span></div>
+      <div class="kv"><span>Total prize pool paid out</span><span>${money(totalPool)}</span></div>
+      <div class="kv"><span>Draws published</span><span>${drawStats.length}</span></div>
+      <div class="kv"><span>Active subscribers</span><span>${activeSubscribers().length}</span></div>
+    </div>
+    <div class="card">
+      <h3>Charity contribution totals</h3>
+      ${Object.keys(charityTotals).length ? Object.entries(charityTotals).map(([cid,amt])=>{
+        const c = state.charities.find(x=>x.id===cid);
+        return `<div class="kv"><span>${c?c.name:cid}</span><span>${money(amt)}/mo</span></div>`;
+      }).join('') : '<div class="empty-state">No contributions yet.</div>'}
+    </div>
+  </div>`;
+}
+
+/* ---------------- MODALS (auth) ---------------- */
+function renderModal(){
+  const root = document.getElementById('modalRoot');
+  if(!authMode){ root.innerHTML = ''; return; }
+  const isLogin = authMode==='login';
+  root.innerHTML = `
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <h2>${isLogin ? 'Log in' : 'Create your account'}</h2>
+      <p class="sub">${isLogin ? 'Welcome back to Digital Heroes.' : 'Try demo@digitalheroes.co.in / demo123 or admin@digitalheroes.co.in / admin123 for a pre-loaded look.'}</p>
+      ${!isLogin ? `<div class="field"><label>Name</label><input id="authName" placeholder="Your name"></div>` : ''}
+      <div class="field"><label>Email</label><input id="authEmail" type="email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input id="authPass" type="password" placeholder="••••••••"></div>
+      <div class="error-msg" id="authError" style="display:none;"></div>
+      <button class="btn-primary" style="width:100%;" id="authSubmit">${isLogin?'Log in':'Create account'}</button>
+      <div class="toggle-auth">${isLogin ? `New here? <button id="toSignup">Subscribe</button>` : `Already have an account? <button id="toLogin">Log in</button>`}</div>
+    </div>
+  </div>`;
+  document.getElementById('modalClose').onclick = ()=>{ authMode=null; renderModal(); };
+  document.getElementById('modalBackdrop').onclick = (e)=>{ if(e.target.id==='modalBackdrop'){ authMode=null; renderModal(); } };
+  const toS = document.getElementById('toSignup'); if(toS) toS.onclick = ()=>{ authMode='signup'; renderModal(); };
+  const toL = document.getElementById('toLogin'); if(toL) toL.onclick = ()=>{ authMode='login'; renderModal(); };
+  document.getElementById('authSubmit').onclick = ()=>{
+    const email = document.getElementById('authEmail').value.trim().toLowerCase();
+    const pass = document.getElementById('authPass').value;
+    const errEl = document.getElementById('authError');
+    errEl.style.display='none';
+    if(isLogin){
+      const u = state.users.find(x=>x.email.toLowerCase()===email && x.password===pass);
+      if(!u){ errEl.textContent = "We couldn't find an account with that email and password."; errEl.style.display='block'; return; }
+      state.currentUserId = u.id; save(state); authMode=null; route = u.role==='admin' ? 'admin' : 'dashboard';
+      render(); toast(`Welcome back, ${u.name.split(' ')[0]}.`);
+    } else {
+      const name = document.getElementById('authName').value.trim();
+      if(!name || !email || !pass){ errEl.textContent = "Fill in every field to continue."; errEl.style.display='block'; return; }
+      if(state.users.some(x=>x.email.toLowerCase()===email)){ errEl.textContent = "That email is already registered — try logging in."; errEl.style.display='block'; return; }
+      const nu = {id:uid('u'), name, email, password:pass, role:'subscriber', subscription:null, charity:null, scores:[], winnings:[]};
+      state.users.push(nu); state.currentUserId = nu.id; save(state);
+      authMode=null; route='dashboard'; render(); toast('Account created — now pick a plan on your dashboard.');
+    }
+  };
+}
+
+/* ---------------- EVENT WIRING ---------------- */
+function attachRouteHandlers(){
+  // home ctas
+  const ctaSub = document.getElementById('ctaSubscribe');
+  if(ctaSub) ctaSub.onclick = ()=>{ const u=currentUser(); if(!u){ authMode='signup'; renderModal(); } else { go('dashboard'); } };
+  const ctaChar = document.getElementById('ctaCharities');
+  if(ctaChar) ctaChar.onclick = ()=> go('charities');
+
+  // charities filter
+  const cs = document.getElementById('charitySearch');
+  if(cs){ cs.oninput = (e)=>{ charityFilter.q = e.target.value; document.getElementById('app').innerHTML = viewCharities(); attachRouteHandlers(); }; }
+  const cc = document.getElementById('charityCat');
+  if(cc){ cc.onchange = (e)=>{ charityFilter.cat = e.target.value; document.getElementById('app').innerHTML = viewCharities(); attachRouteHandlers(); }; }
+
+  // dashboard: subscribe now
+  const btnSubNow = document.getElementById('btnSubscribeNow');
+  if(btnSubNow) btnSubNow.onclick = ()=> subscribeFlow();
+
+  // dashboard: plan toggle / cancel
+  const btnPlan = document.getElementById('btnTogglePlan');
+  if(btnPlan) btnPlan.onclick = ()=>{
+    const u = currentUser(); u.subscription.plan = u.subscription.plan==='monthly'?'yearly':'monthly'; save(state); render(); toast('Plan updated.');
+  };
+  const btnCancel = document.getElementById('btnCancelSub');
+  if(btnCancel) btnCancel.onclick = ()=>{
+    const u = currentUser(); u.subscription.status = u.subscription.status==='active' ? 'cancelled' : 'active'; save(state); render();
+    toast(u.subscription.status==='active' ? 'Subscription reactivated.' : 'Subscription cancelled.');
+  };
+
+  // dashboard: score entry
+  const btnAddScore = document.getElementById('btnAddScore');
+  if(btnAddScore) btnAddScore.onclick = ()=>{
+    const u = currentUser();
+    const date = document.getElementById('scoreDate').value;
+    const val = parseInt(document.getElementById('scoreVal').value,10);
+    const errEl = document.getElementById('scoreError');
+    errEl.style.display='none';
+    if(!date){ errEl.textContent='Pick a date.'; errEl.style.display='block'; return; }
+    if(!val || val<1 || val>45){ errEl.textContent='Score must be between 1 and 45.'; errEl.style.display='block'; return; }
+    const res = addScore(u.id, date, val);
+    if(!res.ok){ errEl.textContent='You already logged a score for that date — edit it instead.'; errEl.style.display='block'; return; }
+    render(); toast('Score logged.');
+  };
+  document.querySelectorAll('[data-del-score]').forEach(b=> b.onclick = ()=>{
+    deleteScore(currentUser().id, b.dataset.delScore); render(); toast('Score removed.');
+  });
+  document.querySelectorAll('[data-edit-score]').forEach(b=> b.onclick = ()=>{
+    const u = currentUser(); const s = u.scores.find(x=>x.id===b.dataset.editScore);
+    const row = document.querySelector(`.score-row[data-score-id="${s.id}"]`);
+    row.innerHTML = `
+      <div class="form-row" style="margin:0; width:100%;">
+        <div class="field"><input type="date" value="${s.date}" max="${nowISO()}" id="editDate_${s.id}"></div>
+        <div class="field"><input type="number" min="1" max="45" value="${s.score}" id="editVal_${s.id}"></div>
+        <button class="btn-sm" id="saveEdit_${s.id}">Save</button>
+      </div>`;
+    document.getElementById(`saveEdit_${s.id}`).onclick = ()=>{
+      const d = document.getElementById(`editDate_${s.id}`).value;
+      const v = parseInt(document.getElementById(`editVal_${s.id}`).value,10);
+      if(!v || v<1||v>45){ toast('Score must be between 1 and 45.'); return; }
+      const res = editScore(u.id, s.id, d, v);
+      if(!res.ok){ toast('Another score already uses that date.'); return; }
+      render(); toast('Score updated.');
+    };
+  });
+
+  // dashboard: charity slider + select
+  const slider = document.getElementById('charitySlider');
+  if(slider) slider.oninput = (e)=>{ document.getElementById('charitySliderVal').textContent = e.target.value + '%'; };
+  const btnSaveCharity = document.getElementById('btnSaveCharity');
+  if(btnSaveCharity) btnSaveCharity.onclick = ()=>{
+    const u = currentUser();
+    const cid = document.getElementById('charitySelect').value;
+    const pct = parseInt(document.getElementById('charitySlider').value,10);
+    u.charity = {id:cid, pct}; save(state); render(); toast('Charity choice saved.');
+  };
+
+  // dashboard: upload proof (mock)
+  document.querySelectorAll('[data-upload-proof]').forEach(b=> b.onclick = ()=>{
+    const u = currentUser();
+    const w = u.winnings.find(x=>x.id===b.dataset.uploadProof);
+    w.proof = 'screenshot_'+Date.now()+'.png';
+    save(state); render(); toast('Proof uploaded — an admin will review it.');
+  });
+
+  // admin tabs
+  document.querySelectorAll('[data-admin-tab]').forEach(b=> b.onclick = ()=>{ adminTab = b.dataset.adminTab; render(); });
+
+  // admin: users
+  document.querySelectorAll('[data-remove-user]').forEach(b=> b.onclick = ()=>{
+    state.users = state.users.filter(u=>u.id!==b.dataset.removeUser); save(state); render(); toast('User removed.');
+  });
+
+  // admin: draws
+  const drawTypeSelect = document.getElementById('drawTypeSelect');
+  if(drawTypeSelect) drawTypeSelect.onchange = (e)=>{ adminDrawDraftType = e.target.value; };
+  const btnCreateDraft = document.getElementById('btnCreateDraft');
+  if(btnCreateDraft) btnCreateDraft.onclick = ()=>{ createDraftDraw(adminDrawDraftType); render(); toast('Draw simulated.'); };
+  const btnResim = document.getElementById('btnResim');
+  if(btnResim) btnResim.onclick = ()=>{ const d = state.draws.find(x=>x.status==='draft'); resimulate(d.id); render(); toast('Re-simulated.'); };
+  const btnPublish = document.getElementById('btnPublish');
+  if(btnPublish) btnPublish.onclick = ()=>{ const d = state.draws.find(x=>x.status==='draft'); publishDraw(d.id); render(); toast('Draw published — winners notified.'); };
+  const btnDiscard = document.getElementById('btnDiscardDraft');
+  if(btnDiscard) btnDiscard.onclick = ()=>{ state.draws = state.draws.filter(d=>d.status!=='draft'); save(state); render(); };
+
+  // admin: charities
+  const btnAddCharity = document.getElementById('btnAddCharity');
+  if(btnAddCharity) btnAddCharity.onclick = ()=>{
+    const name = document.getElementById('newCharName').value.trim();
+    const cat = document.getElementById('newCharCat').value.trim() || 'General';
+    const desc = document.getElementById('newCharDesc').value.trim() || 'No description yet.';
+    if(!name){ toast('Give the charity a name first.'); return; }
+    state.charities.push({id:uid('c'), name, cat, desc, events:'No scheduled events'});
+    save(state); render(); toast('Charity added.');
+  };
+  document.querySelectorAll('[data-remove-charity]').forEach(b=> b.onclick = ()=>{
+    state.charities = state.charities.filter(c=>c.id!==b.dataset.removeCharity); save(state); render(); toast('Charity removed.');
+  });
+
+  // admin: winners
+  document.querySelectorAll('[data-approve-win]').forEach(b=> b.onclick = ()=>{
+    const [uid_, wid] = b.dataset.approveWin.split(':');
+    const u = state.users.find(x=>x.id===uid_); const w = u.winnings.find(x=>x.id===wid);
+    w.status='approved'; save(state); render(); toast('Winner approved.');
+  });
+  document.querySelectorAll('[data-reject-win]').forEach(b=> b.onclick = ()=>{
+    const [uid_, wid] = b.dataset.rejectWin.split(':');
+    const u = state.users.find(x=>x.id===uid_); const w = u.winnings.find(x=>x.id===wid);
+    w.status='rejected'; save(state); render(); toast('Submission rejected.');
+  });
+  document.querySelectorAll('[data-mark-paid]').forEach(b=> b.onclick = ()=>{
+    const [uid_, wid] = b.dataset.markPaid.split(':');
+    const u = state.users.find(x=>x.id===uid_); const w = u.winnings.find(x=>x.id===wid);
+    w.status='paid'; save(state); render(); toast('Marked as paid.');
+  });
+}
+
+function subscribeFlow(){
+  const u = currentUser();
+  u.subscription = {plan:'monthly', status:'active', renewal: addMonths(nowISO(),1), startedAt: nowISO()};
+  save(state); render(); toast('Subscribed — welcome aboard!');
+}
+function addMonths(iso, n){
+  const d = new Date(iso); d.setMonth(d.getMonth()+n); return d.toISOString().slice(0,10);
+}
+
+render();
+</script>
+</body>
+</html>
